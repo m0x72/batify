@@ -82,11 +82,18 @@ if [ "${_bat_plug}" != "none" ]; then
 	fi
 else
 	case ${_bat_capacity} in
-		[0-9])  ntf_lvl="critical"; icon="bat-critical" ;;
-		1[0-5]) ntf_lvl="low";      icon="bat-low"      ;;
+        [0-5]) hibernate="1" ;;
+		[0-9] | 10)  ntf_lvl="critical"; icon="bat-critical" ;;
+		1[0-9] | 20) ntf_lvl="low"; icon="bat-low"      ;;
 		*) exit ;;
 	esac
 	ntf_msg="[${_bat_name}] - Battery: ${_bat_capacity}%"
+fi
+
+# hibernate 
+if [ "${hibernate}" == "1" ]; then
+    "/usr/bin/systemctl hibernate"
+    exit 
 fi
 
 [ -f /usr/bin/su ]  && su_path="/usr/bin/su"
@@ -102,3 +109,4 @@ icon_path="${ICON_DIR}/${icon}.png"
 DBUS_SESSION_BUS_ADDRESS=${dbus} DISPLAY=${xdisplay} XAUTHORITY=${xauth} \
 "${su_path}" "${xuser}" -c \
 "/usr/bin/notify-send --hint=int:transient:1 -u ${ntf_lvl} -i \"${icon_path}\" \"${ntf_msg}\""
+
