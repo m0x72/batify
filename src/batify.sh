@@ -82,18 +82,11 @@ if [ "${_bat_plug}" != "none" ]; then
 	fi
 else
 	case ${_bat_capacity} in
-        [0-5]) hibernate="1" ;;
 		[0-9] | 10)  ntf_lvl="critical"; icon="bat-critical" ;;
-		1[0-9] | 20) ntf_lvl="low"; icon="bat-low"      ;;
+		1[0-9] | 20) ntf_lvl="critical"; icon="bat-low"      ;;
 		*) exit ;;
 	esac
 	ntf_msg="[${_bat_name}] - Battery: ${_bat_capacity}%"
-fi
-
-# hibernate 
-if [ "${hibernate}" == "1" ]; then
-    "/usr/bin/systemctl hibernate"
-    exit 
 fi
 
 [ -f /usr/bin/su ]  && su_path="/usr/bin/su"

@@ -13,6 +13,11 @@ $(UDEV):
 	@echo -e 'ACTION=="change", KERNEL=="BAT0", \\'                       >  $@
 	@echo -e 'SUBSYSTEM=="power_supply", \\'                              >> $@
 	@echo -e 'ATTR{status}=="Discharging", \\'                            >> $@
+	@echo -e 'ATTR{capacity}=="[0-4]", \\'                            	  >> $@
+	@echo -e 'RUN+="/usr/bin/systemctl hibernate"\n' 					  >> $@
+	@echo -e 'ACTION=="change", KERNEL=="BAT0", \\'                       >> $@
+	@echo -e 'SUBSYSTEM=="power_supply", \\'                              >> $@
+	@echo -e 'ATTR{status}=="Discharging", \\'                            >> $@
 	@echo -e 'RUN+="/usr/local/bin/batify.sh %k $$attr{capacity} none"\n' >> $@
 	@echo -e 'SUBSYSTEM=="power_supply", ACTION=="change", \\'            >> $@
 	@echo -e 'ENV{POWER_SUPPLY_ONLINE}=="0", ENV{POWER}="off", \\'        >> $@
